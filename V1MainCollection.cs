@@ -37,6 +37,7 @@ public class V1MainCollection : System.Collections.Generic.IEnumerable<V1Data>
 		{
 			if (list[i].id == id && list[i].date == date) {
 				list.RemoveAt(i);
+				i--;
 				found = true;
 			}
 		}
