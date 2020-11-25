@@ -121,15 +121,10 @@ public class V1DataOnGrid : V1Data, System.Collections.Generic.IEnumerable<DataI
 	}
 
 	// Implementation of IEnumerable<DataItem> interface
-	public System.Collections.Generic.IEnumerator<DataItem> GetEnumerator()
+	public override System.Collections.Generic.IEnumerator<DataItem> GetEnumerator()
 	{
 		return (System.Collections.Generic.IEnumerator<DataItem>)
 			new V1DataOnGridEnum(this.grid, this.measurements);
-	}
-
-	System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-	{
-		return this.GetEnumerator();
 	}
 
 	// When we implement IEnumerable, we must also implement IEnumerator.

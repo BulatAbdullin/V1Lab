@@ -5,11 +5,11 @@ public struct DataItem
 	public float time;
 	public System.Numerics.Vector3 magneticField;
 
-	public float Length
+	public System.Numerics.Vector3 MagneticField
 	{
 		get
 		{
-			return magneticField.Length();
+			return magneticField;
 		}
 	}
 
@@ -56,7 +56,7 @@ public struct Grid
 	}
 }
 
-public abstract class V1Data
+public abstract class V1Data : System.Collections.Generic.IEnumerable<DataItem>
 {
 	public string id
 	{
@@ -85,5 +85,12 @@ public abstract class V1Data
 	public override string ToString()
 	{
 		return id + ": " + date.ToString();
+	}
+
+	public abstract System.Collections.Generic.IEnumerator<DataItem> GetEnumerator();
+
+	System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+	{
+		return GetEnumerator();
 	}
 }

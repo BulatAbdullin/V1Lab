@@ -1,11 +1,11 @@
 public class V1DataCollection : V1Data, System.Collections.Generic.IEnumerable<DataItem> 
 {
-	private System.Collections.Generic.List<DataItem> list;
+	private System.Collections.Generic.List<DataItem> dataItems;
 
 	public V1DataCollection(string id_, System.DateTime date_)
 		: base(id_, date_)
 	{
-		list = new System.Collections.Generic.List<DataItem>();
+		dataItems = new System.Collections.Generic.List<DataItem>();
 	}
 
 	public void InitRandom(int nItems, float tmin, float tmax, float minValue,
@@ -19,20 +19,20 @@ public class V1DataCollection : V1Data, System.Collections.Generic.IEnumerable<D
 			vector.X = (float) (minValue + range * rand.NextDouble());
 			vector.Y = (float) (minValue + range * rand.NextDouble());
 			vector.Z = (float) (minValue + range * rand.NextDouble());
-			list.Add(new DataItem(time, vector));
+			dataItems.Add(new DataItem(time, vector));
 		}
 	}
 
-	public void SetMeasurements(System.Collections.Generic.List<DataItem> list_)
+	public void SetMeasurements(System.Collections.Generic.List<DataItem> dataItems_)
 	{
-		list = list_;
+		dataItems = dataItems_;
 	}
 
 	public override float[] NearZero(float eps)
 	{
 		System.Collections.Generic.List<float> nearZeroTimestamps
 				= new System.Collections.Generic.List<float>();
-		foreach (DataItem item in list) {
+		foreach (DataItem item in dataItems) {
 			if (item.magneticField.Length() < eps) {
 				nearZeroTimestamps.Add(item.time);
 			}
@@ -46,37 +46,32 @@ public class V1DataCollection : V1Data, System.Collections.Generic.IEnumerable<D
 		return "type: " + this.GetType().Name
 			+ "; id: " + id
 			+ "; date: " +  date.ToString()
-			+ "; nItems: " + list.Count.ToString();
+			+ "; nItems: " + dataItems.Count.ToString();
 	}
 
 	public override string ToLongString()
 	{
-		string listInfo = "";
-		foreach (DataItem item in list) {
-			listInfo += item.time.ToString("N5") +
+		string dataItemsInfo = "";
+		foreach (DataItem item in dataItems) {
+			dataItemsInfo += item.time.ToString("N5") +
 					": " + item.magneticField.ToString("N5") + "\n";
 		}
-		return ToString() + "\n" + listInfo;
+		return ToString() + "\n" + dataItemsInfo;
 	}
 
 	public override string ToLongString(string format)
 	{
-		string listInfo = "";
-		foreach (DataItem item in list) {
-			listInfo += item.time.ToString(format) +
+		string dataItemsInfo = "";
+		foreach (DataItem item in dataItems) {
+			dataItemsInfo += item.time.ToString(format) +
 					": " + item.magneticField.ToString(format) + "\n";
 		}
-		return this.ToString() + "\n" + listInfo;
+		return this.ToString() + "\n" + dataItemsInfo;
 	}
 
 	// Implementation of IEnumerable<DataItem> interface
-	public System.Collections.Generic.IEnumerator<DataItem> GetEnumerator()
+	public override System.Collections.Generic.IEnumerator<DataItem> GetEnumerator()
 	{
-		return list.GetEnumerator();
-	}
-
-	System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-	{
-		return this.GetEnumerator();
+		return dataItems.GetEnumerator();
 	}
 }
