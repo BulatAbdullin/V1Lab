@@ -1,7 +1,17 @@
+using System.Linq;
+
 public struct DataItem
 {
 	public float time;
 	public System.Numerics.Vector3 magneticField;
+
+	public float Length
+	{
+		get
+		{
+			return magneticField.Length();
+		}
+	}
 
 	public DataItem(float time_, System.Numerics.Vector3 magneticField_)
 	{

@@ -1,6 +1,9 @@
+using System.Linq;
+
 public class V1MainCollection : System.Collections.Generic.IEnumerable<V1Data>
 {
 	private System.Collections.Generic.List<V1Data> list;
+
 	public int Count
 	{
 		get
@@ -9,20 +12,17 @@ public class V1MainCollection : System.Collections.Generic.IEnumerable<V1Data>
 		}
 	}
 
+	public float MaxLength
+	{
+		get
+		{
+			return 0;
+		}
+	}
+
 	public V1MainCollection()
 	{
 		list = new System.Collections.Generic.List<V1Data>();
-	}
-
-	// Implementation of IEnumerable<V1Data> interface
-	public System.Collections.Generic.IEnumerator<V1Data> GetEnumerator()
-	{
-		return list.GetEnumerator();
-	}
-
-	System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-	{
-		return this.GetEnumerator();
 	}
 
 	public void Add(V1Data item)
@@ -46,23 +46,20 @@ public class V1MainCollection : System.Collections.Generic.IEnumerable<V1Data>
 
 	public void AddDefaults()
 	{
-		V1DataOnGrid dataOnGrid = new V1DataOnGrid(
-				"default",
-				new System.DateTime(2020, 9, 27),
-				new Grid(0, 0.2f, 30)
-		);
-		dataOnGrid.InitRandom(0, 0.8f);
-		list.Add(dataOnGrid);
+		list.Add(new V1DataOnGrid("V1DataOnGrid_default"));
 
-		V1DataCollection[] dataCollection = new V1DataCollection[2];
-		for (int i = 0; i < 2; i++) {
-			dataCollection[i] = new V1DataCollection(
-					"id" + i.ToString(),
-					System.DateTime.Today
-			);
-			dataCollection[i].InitRandom(15, 0, 10, -0.8f, 0.5f);
-			list.Add(dataCollection[i]);
-		}
+		V1DataOnGrid emptyDataOnGrid = new V1DataOnGrid(
+				"default V1DataOnGrid",
+				new System.DateTime(2020, 9, 27),
+				new Grid(0, 0.2f, 0)
+		);
+		list.Add(emptyDataOnGrid);
+
+		V1DataCollection emptyDataCollection = new V1DataCollection(
+				"default V1DataCollection",
+				System.DateTime.Today
+		);
+		list.Add(emptyDataCollection);
 	}
 
 	public override string ToString()
@@ -72,5 +69,26 @@ public class V1MainCollection : System.Collections.Generic.IEnumerable<V1Data>
 			info += i.ToString() + ") " + list[i].ToString() + "\n";
 		}
 		return info;
+	}
+
+	public string ToLongString(string format)
+	{
+		string info = "";
+		for (int i = 0; i < Count; i++) {
+			info += "Dataset " + i.ToString() + ":\n"
+				+ list[i].ToLongString(format) + "\n";
+		}
+		return info;
+	}
+
+	// Implementation of IEnumerable<V1Data> interface
+	public System.Collections.Generic.IEnumerator<V1Data> GetEnumerator()
+	{
+		return list.GetEnumerator();
+	}
+
+	System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+	{
+		return this.GetEnumerator();
 	}
 }

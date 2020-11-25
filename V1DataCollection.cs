@@ -1,4 +1,4 @@
-public class V1DataCollection : V1Data
+public class V1DataCollection : V1Data, System.Collections.Generic.IEnumerable<DataItem> 
 {
 	private System.Collections.Generic.List<DataItem> list;
 
@@ -67,5 +67,16 @@ public class V1DataCollection : V1Data
 					": " + item.magneticField.ToString(format) + "\n";
 		}
 		return this.ToString() + "\n" + listInfo;
+	}
+
+	// Implementation of IEnumerable<DataItem> interface
+	public System.Collections.Generic.IEnumerator<DataItem> GetEnumerator()
+	{
+		return list.GetEnumerator();
+	}
+
+	System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+	{
+		return this.GetEnumerator();
 	}
 }
