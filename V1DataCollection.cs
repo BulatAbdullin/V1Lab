@@ -43,9 +43,10 @@ public class V1DataCollection : V1Data
 
 	public override string ToString()
 	{
-		return "type: " + this.GetType().Name + "; id: " + id
-				+ "; date: " +  date.ToString()
-				+ "; nItems: " + list.Count.ToString();
+		return "type: " + this.GetType().Name
+			+ "; id: " + id
+			+ "; date: " +  date.ToString()
+			+ "; nItems: " + list.Count.ToString();
 	}
 
 	public override string ToLongString()
@@ -56,5 +57,15 @@ public class V1DataCollection : V1Data
 					": " + item.magneticField.ToString("N5") + "\n";
 		}
 		return ToString() + "\n" + listInfo;
+	}
+
+	public override string ToLongString(string format)
+	{
+		string listInfo = "";
+		foreach (DataItem item in list) {
+			listInfo += item.time.ToString(format) +
+					": " + item.magneticField.ToString(format) + "\n";
+		}
+		return this.ToString() + "\n" + listInfo;
 	}
 }

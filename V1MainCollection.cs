@@ -32,16 +32,16 @@ public class V1MainCollection : System.Collections.Generic.IEnumerable<V1Data>
 
 	public bool Remove(string id, System.DateTime date)
 	{
-		bool found = false;
+		bool is_found = false;
 		for (int i = 0; i < list.Count; i++)
 		{
 			if (list[i].id == id && list[i].date == date) {
 				list.RemoveAt(i);
 				i--;
-				found = true;
+				is_found = true;
 			}
 		}
-		return found;
+		return is_found;
 	}
 
 	public void AddDefaults()

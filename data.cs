@@ -11,7 +11,13 @@ public struct DataItem
 
 	public override string ToString()
 	{
-		return time.ToString() + ": " + magneticField.ToString();
+		return time.ToString() + " " + magneticField.ToString();
+	}
+
+	public string ToString(string format)
+	{
+		return time.ToString(format) + " " + magneticField.ToString(format)
+			+ " " +  magneticField.Length().ToString(format);
 	}
 }
 
@@ -30,7 +36,12 @@ public struct Grid
 
 	public override string ToString()
 	{
-		return startTime.ToString() + " " + timeStep.ToString()
+		return startTime.ToString() + " " + timeStep.ToString() + " " + numNodes.ToString();
+	}
+
+	public string ToString(string format)
+	{
+		return startTime.ToString(format) + " " + timeStep.ToString(format)
 			+ " " + numNodes.ToString();
 	}
 }
@@ -49,7 +60,7 @@ public abstract class V1Data
 		protected set;
 	}
 
-	public V1Data(string id_, System.DateTime date_)
+	public V1Data(string id_ = "id", System.DateTime date_ = new System.DateTime())
 	{
 		id = id_;
 		date = date_;
@@ -58,6 +69,8 @@ public abstract class V1Data
 	public abstract float[] NearZero(float eps);
 
 	public abstract string ToLongString();
+
+	public abstract string ToLongString(string format);
 
 	public override string ToString()
 	{

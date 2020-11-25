@@ -1,10 +1,11 @@
 CS=mcs
+FLAGS=-debug
 ASSEMBLIES=System.Numerics.dll
 
 all: run
 
 run: main.exe
-	./main.exe
+	mono --debug main.exe
 
 
 MYLIBS=data.dll,V1DataOnGrid.dll,V1DataCollection.dll,V1MainCollection.dll
@@ -24,4 +25,4 @@ data.dll: data.cs
 	$(CS) -r:$(ASSEMBLIES) -t:library $<
 
 clean:
-	rm *.{exe,dll}
+	rm *.{exe,dll,mdb}
