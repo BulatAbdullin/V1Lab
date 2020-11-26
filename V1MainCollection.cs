@@ -24,6 +24,32 @@ public class V1MainCollection : System.Collections.Generic.IEnumerable<V1Data>
 		}
 	}
 
+	public DataItem ArgmaxLength
+	{
+		get
+		{
+			return (
+				from dataset in datasets
+				from dataItem in dataset
+				where dataItem.MagneticField.Length() == MaxLength
+				select dataItem).First();
+
+		}
+	}
+
+	public System.Collections.Generic.IEnumerable<float> NonUniqueTime
+	{
+		get
+		{
+			return
+				from dataset in datasets
+				from dataItem in dataset
+				group dataItem by dataItem.time into grouped
+				where grouped.Count() > 1
+				select grouped.First().time;
+		}
+	}
+
 	public V1MainCollection()
 	{
 		datasets = new System.Collections.Generic.List<V1Data>();
@@ -50,20 +76,29 @@ public class V1MainCollection : System.Collections.Generic.IEnumerable<V1Data>
 
 	public void AddDefaults()
 	{
-		datasets.Add(new V1DataOnGrid("V1DataOnGrid_default.txt"));
+		datasets.Add(new V1DataOnGrid("default_V1DataOnGrid.txt"));
 
 		V1DataOnGrid emptyDataOnGrid = new V1DataOnGrid(
 				"default V1DataOnGrid (empty)",
 				new System.DateTime(2020, 9, 27),
-				new Grid(0, 0.2f, 0)
-		);
+				new Grid(0, 0.2f, 0));
 		datasets.Add(emptyDataOnGrid);
 
 		V1DataCollection emptyDataCollection = new V1DataCollection(
 				"default V1DataCollection (empty)",
-				System.DateTime.Today
-		);
+				System.DateTime.Today);
 		datasets.Add(emptyDataCollection);
+
+		V1DataCollection dataCollection = new V1DataCollection(
+				"default V1DataCollection",
+				System.DateTime.Today);
+		System.Collections.Generic.List<DataItem> dataItems =
+			new System.Collections.Generic.List<DataItem>();
+		dataItems.Add(new DataItem(0, new System.Numerics.Vector3()));
+		dataItems.Add(new DataItem(0.4f, new System.Numerics.Vector3()));
+		dataItems.Add(new DataItem(0.8f, new System.Numerics.Vector3()));
+		dataCollection.SetMeasurements(dataItems);
+		datasets.Add(dataCollection);
 	}
 
 	public override string ToString()
