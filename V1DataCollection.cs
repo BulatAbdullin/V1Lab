@@ -63,8 +63,9 @@ public class V1DataCollection : V1Data, System.Collections.Generic.IEnumerable<D
 	{
 		string dataItemsInfo = "";
 		foreach (DataItem item in dataItems) {
-			dataItemsInfo += item.time.ToString(format) +
-					": " + item.magneticField.ToString(format) + "\n";
+			//dataItemsInfo += item.time.ToString(format) +
+					//": " + item.magneticField.ToString(format) + "\n";
+			dataItemsInfo += item.ToString(format) + "\n";
 		}
 		return this.ToString() + "\n" + dataItemsInfo;
 	}

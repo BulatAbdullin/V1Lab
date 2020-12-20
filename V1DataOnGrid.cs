@@ -111,7 +111,8 @@ public class V1DataOnGrid : V1Data, System.Collections.Generic.IEnumerable<DataI
 		string gridInfo = "";
 		for (int i = 0; i < grid.numNodes; i++) {
 			gridInfo += (grid.startTime + i * grid.timeStep).ToString(format)
-					+ ": " + measurements[i].ToString(format) + "\n";
+					+ ": " + measurements[i].ToString(format)
+					+ " " + measurements[i].Length().ToString(format) + "\n";
 		}
 		return "type: " + this.GetType().Name
 			+ "; id: " + id
@@ -120,61 +121,10 @@ public class V1DataOnGrid : V1Data, System.Collections.Generic.IEnumerable<DataI
 			+ "\n" + gridInfo;
 	}
 
-	// Implementation of IEnumerable<DataItem> interface
 	public override System.Collections.Generic.IEnumerator<DataItem> GetEnumerator()
 	{
-		return (System.Collections.Generic.IEnumerator<DataItem>)
-			new V1DataOnGridEnum(this.grid, this.measurements);
-	}
-
-	// When we implement IEnumerable, we must also implement IEnumerator.
-	public class V1DataOnGridEnum : System.Collections.Generic.IEnumerator<DataItem>
-	{
-		public DataItem[] dataItems;
-		// Position the enumerator before the first element
-		// until the first MoveNext() call.
-		private int position = -1;
-
-		public V1DataOnGridEnum(Grid grid, System.Numerics.Vector3[] measurements)
-		{
-			dataItems = new DataItem[grid.numNodes];
-			for (int i = 0; i < grid.numNodes; i++) {
-				dataItems[i] = new DataItem(grid.startTime + i * grid.timeStep, measurements[i]);
-			}
+		for (int i = 0; i < grid.numNodes; i++) {
+			yield return new DataItem(grid.startTime + i * grid.timeStep, measurements[i]);
 		}
-
-		public bool MoveNext()
-		{
-			position++;
-			return (position < dataItems.Length);
-		}
-
-		public void Reset()
-		{
-			position = -1;
-		}
-
-		object System.Collections.IEnumerator.Current
-		{
-			get
-			{
-				return this.Current;
-			}
-		}
-
-		public DataItem Current
-		{
-			get
-			{
-				try {
-					return dataItems[position];
-				} catch (System.IndexOutOfRangeException) {
-					throw new System.InvalidOperationException();
-				}
-			}
-		}
-
-		void System.IDisposable.Dispose()
-		{}
 	}
 }
